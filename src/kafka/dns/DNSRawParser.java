@@ -6,14 +6,10 @@ package kafka.dns;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by WeiChen on 2015/7/22.
- */
 public class DNSRawParser implements Parser {
     private static final Logger logger = Logger.getLogger(DNSRawParser.class);
     //private SimpleDateFormat timeFormatter;
@@ -121,7 +117,7 @@ public class DNSRawParser implements Parser {
                 String answerData = ans.split("DATA")[1];
                 if (answerData.contains("(0)")) {
                     String dataTmp = "(" + answerData.replaceAll("(\\W+)[(]", "\\|").split("\\|")[1];
-                    System.out.println("data tmp="+dataTmp);
+                    System.out.println("data tmp=" + dataTmp);
                     String data = domainAnalyzer(dataTmp, "");
                     //System.out.println(data);
                     bodyMap.put("AnsDATA", data);
@@ -195,15 +191,15 @@ public class DNSRawParser implements Parser {
         //get sth in []
         String sth2 = body.split("\\[")[1].split("\\]")[0];
         //body = body.split(sth2)[1];
-        body= body.split(sth2)[1];
+        body = body.split(sth2)[1];
 
         //get Record type
-        String rcType = body.split("\\(")[0].replaceAll("[\\W]","");
+        String rcType = body.split("\\(")[0].replaceAll("[\\W]", "");
         bodyMap.put("RecordType", rcType.replaceAll("([\\W])", ""));
         body = (String) body.subSequence(rcType.length(), body.length());
 
         //get Domain
-        String domain = domainAnalyzer(body, "").replaceFirst("(^[\\W]+)","");
+        String domain = domainAnalyzer(body, "").replaceFirst("(^[\\W]+)", "");
         bodyMap.put("Domain", domain);
 
         return bodyMap;
